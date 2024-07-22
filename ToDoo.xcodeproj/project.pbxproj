@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F12E56D2C4E86160003ADE7 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F12E56C2C4E86160003ADE7 /* SplashScreenView.swift */; };
 		2F14B1622C4569C000429936 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2F14B1612C4569C000429936 /* FirebaseAuth */; };
 		2F14B1642C4569C000429936 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 2F14B1632C4569C000429936 /* FirebaseDatabase */; };
 		2F14B1662C4569C000429936 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2F14B1652C4569C000429936 /* FirebaseFirestore */; };
@@ -27,9 +28,15 @@
 		2FC7B9A02C3EB7DF004F8E4B /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC7B99F2C3EB7DF004F8E4B /* AddTaskView.swift */; };
 		2FC7B9A22C3EBE3A004F8E4B /* TaskFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC7B9A12C3EBE3A004F8E4B /* TaskFormView.swift */; };
 		2FC7B9A42C3EC666004F8E4B /* CategoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC7B9A32C3EC666004F8E4B /* CategoryDetailView.swift */; };
+		2FE6A6CC2C494B6E00EDB181 /* CustomBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6A6CB2C494B6E00EDB181 /* CustomBackgroundView.swift */; };
+		2FE6A6CE2C494BEC00EDB181 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6A6CD2C494BEC00EDB181 /* Styles.swift */; };
+		2FE6A6D02C494E3900EDB181 /* FloatingAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6A6CF2C494E3900EDB181 /* FloatingAddButton.swift */; };
+		2FE6A6D22C4950DD00EDB181 /* CategoryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6A6D12C4950DD00EDB181 /* CategoryCardView.swift */; };
+		2FE6A6D42C4A72B200EDB181 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6A6D32C4A72B200EDB181 /* CustomButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F12E56C2C4E86160003ADE7 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		2F14B1672C4569EA00429936 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2F14B16B2C456AD700429936 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		2F34BC142C3EA22F003F4759 /* ToDoo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,6 +54,11 @@
 		2FC7B99F2C3EB7DF004F8E4B /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
 		2FC7B9A12C3EBE3A004F8E4B /* TaskFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFormView.swift; sourceTree = "<group>"; };
 		2FC7B9A32C3EC666004F8E4B /* CategoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailView.swift; sourceTree = "<group>"; };
+		2FE6A6CB2C494B6E00EDB181 /* CustomBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackgroundView.swift; sourceTree = "<group>"; };
+		2FE6A6CD2C494BEC00EDB181 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
+		2FE6A6CF2C494E3900EDB181 /* FloatingAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingAddButton.swift; sourceTree = "<group>"; };
+		2FE6A6D12C4950DD00EDB181 /* CategoryCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCardView.swift; sourceTree = "<group>"; };
+		2FE6A6D32C4A72B200EDB181 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,15 +101,21 @@
 				2FC7B99B2C3EAA91004F8E4B /* TaskViewModel.swift */,
 				2F34BC172C3EA22F003F4759 /* ToDooApp.swift */,
 				2FAFCDA62C47D9E9004BFAF6 /* OnboardingView.swift */,
-				2F34BC192C3EA22F003F4759 /* ContentView.swift */,
-				2F14B16B2C456AD700429936 /* TaskListView.swift */,
 				2FAFCDA82C47F957004BFAF6 /* SignInView.swift */,
 				2FAFCDAA2C47F96D004BFAF6 /* SignUpView.swift */,
+				2F34BC192C3EA22F003F4759 /* ContentView.swift */,
+				2F12E56C2C4E86160003ADE7 /* SplashScreenView.swift */,
+				2F14B16B2C456AD700429936 /* TaskListView.swift */,
+				2FE6A6D12C4950DD00EDB181 /* CategoryCardView.swift */,
 				2FC7B9A32C3EC666004F8E4B /* CategoryDetailView.swift */,
 				2FC7B9A12C3EBE3A004F8E4B /* TaskFormView.swift */,
 				2FC7B99F2C3EB7DF004F8E4B /* AddTaskView.swift */,
 				2FC7B99D2C3EAE3C004F8E4B /* EditTaskView.swift */,
 				2F34BC1B2C3EA230003F4759 /* Assets.xcassets */,
+				2FE6A6CB2C494B6E00EDB181 /* CustomBackgroundView.swift */,
+				2FE6A6D32C4A72B200EDB181 /* CustomButton.swift */,
+				2FE6A6CF2C494E3900EDB181 /* FloatingAddButton.swift */,
+				2FE6A6CD2C494BEC00EDB181 /* Styles.swift */,
 				2F34BC1D2C3EA230003F4759 /* Preview Content */,
 			);
 			path = ToDoo;
@@ -193,17 +211,23 @@
 			files = (
 				2FC7B99C2C3EAA91004F8E4B /* TaskViewModel.swift in Sources */,
 				2FC7B99A2C3EAA3F004F8E4B /* Task.swift in Sources */,
+				2FE6A6D42C4A72B200EDB181 /* CustomButton.swift in Sources */,
 				2F34BC1A2C3EA22F003F4759 /* ContentView.swift in Sources */,
 				2FC7B9A22C3EBE3A004F8E4B /* TaskFormView.swift in Sources */,
 				2FC7B9A02C3EB7DF004F8E4B /* AddTaskView.swift in Sources */,
+				2FE6A6D22C4950DD00EDB181 /* CategoryCardView.swift in Sources */,
 				2F34BC182C3EA22F003F4759 /* ToDooApp.swift in Sources */,
+				2FE6A6CE2C494BEC00EDB181 /* Styles.swift in Sources */,
 				2F14B16C2C456AD700429936 /* TaskListView.swift in Sources */,
 				2FAFCDA52C47C510004BFAF6 /* AuthManager.swift in Sources */,
+				2F12E56D2C4E86160003ADE7 /* SplashScreenView.swift in Sources */,
 				2FAFCDA72C47D9E9004BFAF6 /* OnboardingView.swift in Sources */,
 				2FAFCDAB2C47F96D004BFAF6 /* SignUpView.swift in Sources */,
+				2FE6A6D02C494E3900EDB181 /* FloatingAddButton.swift in Sources */,
 				2FC7B99E2C3EAE3C004F8E4B /* EditTaskView.swift in Sources */,
 				2FC7B9A42C3EC666004F8E4B /* CategoryDetailView.swift in Sources */,
 				2FAFCDA92C47F957004BFAF6 /* SignInView.swift in Sources */,
+				2FE6A6CC2C494B6E00EDB181 /* CustomBackgroundView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

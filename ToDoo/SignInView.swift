@@ -15,48 +15,51 @@ struct SignInView: View {
     @Binding var showSignUp: Bool
 
     var body: some View {
-        VStack {
-            TextField("Email", text: $email)
-                .keyboardType(.emailAddress)
-                .autocapitalization(.none)
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(8)
-                .onChange(of: email) { 
-                    authManager.clearError() }
-
-            SecureField("Password", text: $password)
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(8)
-                .onChange(of: password) { authManager.clearError() }
-
-            if !authManager.errorMessage.isEmpty {
-                Text(authManager.errorMessage)
-                    .foregroundColor(.red)
+        ZStack {
+            CustomBackgroundView()
+                .offset(y: -250)
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                Text("Please log in")
+                    .fontWeight(.bold)
                     .padding()
-            }
-
-            Button(action: {
-                print("Attempting to sign in with email: \(email)")
-                authManager.signIn(email: email, password: password)
-            }) {
-                Text("Sign In")
+                
+                TextField("Email", text: $email)
+                    .keyboardType(.emailAddress)
+                    .autocapitalization(.none)
                     .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
+                    .background(Color(.secondarySystemBackground))
                     .cornerRadius(8)
-            }
+                    .onChange(of: email) {
+                        authManager.clearError() }
 
-            Button(action: {
-                authManager.clearError()
-                showSignUp = true
-            }) {
-                Text("Don't have an account? Sign Up")
-                    .foregroundColor(.blue)
+                SecureField("Password", text: $password)
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(8)
+                    .onChange(of: password) { authManager.clearError() }
+
+                if !authManager.errorMessage.isEmpty {
+                    Text(authManager.errorMessage)
+                        .foregroundColor(.red)
+                        .padding()
+                }
+
+                CustomButton(title: "Sign In") {
+                    print("Attempting to sign in with email: \(email)")
+                    authManager.signIn(email: email, password: password)
+                }
+                
+                Button(action: {
+                    authManager.clearError()
+                    showSignUp = true
+                }) {
+                    Text("Don't have an account? Sign Up")
+                        .foregroundColor(Color.mainGreenColor)
+                }
+                .padding()
             }
-            .padding()
         }
         .padding()
         .onChange(of: authManager.isAuthenticated) {

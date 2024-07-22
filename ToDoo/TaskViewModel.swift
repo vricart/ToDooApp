@@ -8,7 +8,7 @@ class TaskViewModel: ObservableObject {
             saveTasks()
         }
     }
-    @Published var categories: [String] = ["Personal", "Work", "Shopping", "Today", "Planned"] {
+    @Published var categories: [String] = ["Today", "Planned", "Personal", "Work", "Shopping"] {
         didSet {
             saveCategories()
         }
@@ -25,6 +25,9 @@ class TaskViewModel: ObservableObject {
     func addTask(title: String, description: String, category: String, doneBy: Date?) {
         let newTask = Task(title: title, description: description, category: category, doneBy: doneBy)
         taskList.append(newTask)
+        if !categories.contains(category) && category != "Today" && category != "Planned" {
+            addCategory(name: category)
+        }
     }
 
     func updateTask(id: UUID, title: String, description: String, isCompleted: Bool, category: String, doneBy: Date?) {
@@ -34,6 +37,9 @@ class TaskViewModel: ObservableObject {
             taskList[index].isCompleted = isCompleted
             taskList[index].category = category
             taskList[index].doneBy = doneBy
+            if !categories.contains(category) && category != "Today" && category != "Planned" {
+                addCategory(name: category)
+            }
         }
     }
 
@@ -91,6 +97,23 @@ class TaskViewModel: ObservableObject {
             categories = savedCategories
         }
     }
+    
+    static func imageName(for category: String) -> String {
+        switch category {
+        case "Personal":
+            return "to-do-list"
+        case "Work":
+            return "suitcase"
+        case "Shopping":
+            return "shopping-cart"
+        case "Today":
+            return "sun"
+        case "Planned":
+            return "calendar"
+        default:
+            return "to-do-list"
+        }
+    }
 }
 
 extension Date {
@@ -98,4 +121,3 @@ extension Date {
         Calendar.current.isDateInToday(self)
     }
 }
-

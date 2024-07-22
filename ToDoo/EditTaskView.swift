@@ -13,49 +13,68 @@ struct EditTaskView: View {
     @Environment(\.dismiss) var dismiss
     @State private var title: String
     @State private var description: String
-    @State private var isCompleted: Bool
     @State private var category: String
     @State private var newCategory = ""
     @State private var doneBy: Date?
     @State private var includeNewCategory = false
     @State private var includeDoneBy = false
-    
+
     init(viewModel: TaskViewModel, task: Task) {
         self.viewModel = viewModel
         self.task = task
         _title = State(initialValue: task.title)
         _description = State(initialValue: task.description)
-        _isCompleted = State(initialValue: task.isCompleted)
         _category = State(initialValue: task.category)
         _doneBy = State(initialValue: task.doneBy)
-        _includeNewCategory = State(initialValue: !task.category.isEmpty && !["Personal", "Work", "Shopping", "Today", "Planned"].contains(task.category))
+        _includeNewCategory = State(initialValue: !task.category.isEmpty && !viewModel.categories.contains(task.category))
         _includeDoneBy = State(initialValue: task.doneBy != nil)
     }
-    
+
     var body: some View {
-        TaskFormView(
-            title: $title,
-            description: $description,
-            category: $category,
-            categories: $viewModel.categories,
-            newCategory: $newCategory,
-            doneBy: $doneBy,
-            includeNewCategory: $includeNewCategory,
-            includeDoneBy: $includeDoneBy,
-            isCompletedBinding: $isCompleted
-        )
-        .navigationTitle("Edit Task")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Save") {
-                    let taskCategory = includeNewCategory ? category : "Personal"
-                    let taskDoneBy = includeDoneBy ? doneBy : nil
-                    let taskIsPlanned = taskDoneBy != nil && taskDoneBy! > Date()
-                    let finalCategory = taskIsPlanned ? "Planned" : taskCategory
-                    viewModel.updateTask(id: task.id, title: title, description: description, isCompleted: isCompleted, category: finalCategory, doneBy: taskDoneBy)
-                    dismiss()
+        NavigationStack {
+            VStack {
+                TaskFormView(
+                    title: $title,
+                    description: $description,
+                    category: $category,
+                    categories: $viewModel.categories,
+                    newCategory: $newCategory,
+                    doneBy: $doneBy,
+                    includeNewCategory: $includeNewCategory,
+                    includeDoneBy: $includeDoneBy
+                )
+                
+                Spacer(minLength: 100)
+                
+            }
+            .navigationTitle("Edit Task")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Save") {
+                        updateTask()
+                    }
                 }
             }
+        }
+    }
+
+    private func updateTask() {
+        let finalCategory = determineFinalCategory()
+        viewModel.updateTask(id: task.id, title: title, description: description, isCompleted: task.isCompleted, category: finalCategory, doneBy: includeDoneBy ? doneBy : nil)
+        dismiss()
+    }
+
+    private func determineFinalCategory() -> String {
+        if includeNewCategory && !newCategory.isEmpty {
+            if !viewModel.categories.contains(newCategory) {
+                viewModel.addCategory(name: newCategory)
+            }
+            return newCategory
+        } else if includeDoneBy && doneBy != nil && doneBy! > Date() {
+            return "Planned"
+        } else {
+            return category
         }
     }
 }

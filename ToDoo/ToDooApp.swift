@@ -19,13 +19,31 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct ToDooApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
     @StateObject private var authManager = AuthManager()
+    @State private var isShowingSplash = true
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(authManager)
+            ZStack {
+                ContentView()
+                    .environmentObject(authManager)
+                    .onAppear {
+                        authManager.checkAuthStatus()
+                    }
+                
+                if isShowingSplash {
+                    SplashScreenView()
+                        .transition(.opacity)
+                        .zIndex(1)
+                }
+            }
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    withAnimation {
+                        isShowingSplash = false
+                    }
+                }
+            }
         }
     }
 }

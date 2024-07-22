@@ -13,23 +13,32 @@ struct OnboardingView: View {
 
     var body: some View {
         VStack {
-            Text("ToDoo App")
-                .font(.largeTitle)
+            Spacer()
+            
+            Image("todoo-onboarding")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 250)
                 .padding()
-
-            Button(action: {
+            
+            VStack(alignment: .center) {
+                Text("Get Your Life Organized")
+                    .font(.title2).bold()
+                    .padding()
+                
+                Text("ToDoo is a simple and effective to-do list and task manager app which helps you manage time.")
+                    .foregroundColor(Color(.darkGray))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 56)
+            }
+            
+            Spacer()
+            
+            CustomButton(title: "Get Started") {
                 print("Get Started button clicked.")
                 hasSeenOnboarding = true
                 showSignUp = true
-            }) {
-                Text("Get Started")
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
             }
-            .padding()
         }
         .padding()
     }
@@ -38,3 +47,6 @@ struct OnboardingView: View {
 #Preview {
     OnboardingView(showSignUp: .constant(false))
 }
+
+
+

@@ -13,40 +13,64 @@ struct TaskListView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var authManager: AuthManager
     @Binding var showSignUp: Bool
+    @State private var isAddingToDo = false
 
     var body: some View {
         NavigationStack {
-            VStack {
-                Text("Hello, \(authManager.userName)")
-                    .font(.largeTitle)
-                    .padding()
+            ZStack {
+                CustomBackgroundView().edgesIgnoringSafeArea(.all)
 
-                List {
-                    ForEach(viewModel.categories, id: \.self) { category in
-                        NavigationLink(destination: CategoryDetailView(viewModel: viewModel, category: category)) {
-                            HStack {
-                                Text(category)
-                                Spacer()
-                                Text("\(viewModel.taskCount(for: category))")
-                                    .foregroundColor(.gray)
+                VStack(alignment: .leading) {
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text("Hello, \(authManager.userName)")
+                                .font(.title).bold()
+                                .padding(.bottom, 2)
+                            
+                            Text("Today you have \(viewModel.taskCount(for: "Today")) \(viewModel.taskCount(for: "Today") <= 1 ? "task" : "tasks")")
+                                .font(.subheadline)
+                        }
+                        
+                        Spacer()
+                        
+                        Image("profile-img")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 80)
+                            .padding(.horizontal)
+                    }
+                    .padding(.horizontal, 32)
+
+                    ScrollView {
+                        VStack(spacing: 16) {
+                            Spacer()
+                            ForEach(viewModel.categories, id: \.self) { category in
+                                NavigationLink(destination: CategoryDetailView(viewModel: viewModel, category: category)) {
+                                    CategoryCardView(category: category, taskCount: viewModel.taskCount(for: category))
+                                }
                             }
                         }
+                        .padding(.horizontal, 16)
                     }
                 }
+                .padding(.top, 8)
+                
+                FloatingAddButton(isPresented: $isAddingToDo, isCentered: true)
             }
-            .navigationTitle("Categories")
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack {
-                        NavigationLink(destination: AddTaskView(viewModel: viewModel)) {
-                            Image(systemName: "plus")
-                        }
+//                            NavigationLink(destination: AddTaskView(viewModel: viewModel)) {
+//                                Image(systemName: "plus")
+//                            }
                         Button(action: {
                             authManager.signOut()
                             showSignUp = false
                             dismiss()
                         }) {
-                            Image(systemName: "arrow.backward.square")
+                            Image(systemName: "rectangle.portrait.and.arrow.forward")
                         }
                     }
                 }
@@ -56,6 +80,9 @@ struct TaskListView: View {
             if let user = Auth.auth().currentUser {
                 authManager.userName = user.displayName ?? "User"
             }
+        }
+        .sheet(isPresented: $isAddingToDo) {
+            AddTaskView(viewModel: viewModel)
         }
     }
 }

@@ -9,47 +9,55 @@ struct TaskFormView: View {
     @Binding var doneBy: Date?
     @Binding var includeNewCategory: Bool
     @Binding var includeDoneBy: Bool
-    let isCompletedBinding: Binding<Bool>?
 
     var body: some View {
-        Form {
-            Section(header: Text("Title")) {
-                TextField("Title", text: $title)
-            }
-            Section(header: Text("Description")) {
-                TextField("Description", text: $description)
-            }
-            Section(header: Text("Category")) {
-                Picker("Category", selection: $category) {
-                    ForEach(categories, id: \.self) { category in
-                        Text(category).tag(category)
-                    }
+        ZStack {
+            CustomBackgroundView(isReversed: true)
+                .offset(y: 325).edgesIgnoringSafeArea(.all)
+            
+            Form {
+                
+                Section("Title") {
+                    TextField("Title", text: $title)
+                        .underlineTextField()
                 }
-                .pickerStyle(SegmentedPickerStyle())
-                Toggle("Add New Category", isOn: $includeNewCategory)
-                if includeNewCategory {
-                    TextField("New Category", text: $newCategory)
-                    Button("Add Category") {
-                        if !categories.contains(newCategory) && !newCategory.isEmpty {
-                            categories.append(newCategory)
-                            category = newCategory
-                            newCategory = ""
+                
+                Section("Description") {
+                    TextField("Description", text: $description)
+                        .underlineTextField()
+                }
+                
+                Section("Category") {
+                    Picker("Category", selection: $category) {
+                        ForEach(categories, id: \.self) { category in
+                            Text(category).tag(category)
                         }
                     }
-                    .disabled(newCategory.isEmpty)
+                    
+                    Toggle("Add New Category", isOn: $includeNewCategory)
+                    if includeNewCategory {
+                        TextField("New Category", text: $newCategory)
+                            .textFieldStyle(DefaultTextFieldStyle())
+                        Button("Add Category") {
+                            if !categories.contains(newCategory) && !newCategory.isEmpty {
+                                categories.append(newCategory)
+                                category = newCategory
+                                newCategory = ""
+                            }
+                        }
+                        .disabled(newCategory.isEmpty)
+                    }
+                }
+                
+                Section("Date") {
+                    Toggle("Done By?", isOn: $includeDoneBy)
+                    if includeDoneBy {
+                        DatePicker("Done By", selection: Binding($doneBy, replacingNilWith: Date()), displayedComponents: .date)
+                            .datePickerStyle(GraphicalDatePickerStyle())
+                    }
                 }
             }
-            Section {
-                Toggle("Include Done By Date", isOn: $includeDoneBy)
-                if includeDoneBy {
-                    DatePicker("Done By", selection: Binding($doneBy, replacingNilWith: Date()), displayedComponents: .date)
-                }
-            }
-            if let isCompletedBinding = isCompletedBinding {
-                Section {
-                    Toggle("Completed", isOn: isCompletedBinding)
-                }
-            }
+            .scrollContentBackground(.hidden)
         }
     }
 }
@@ -63,6 +71,22 @@ extension Binding {
     }
 }
 
+extension View {
+    func underlineTextField() -> some View {
+        self
+            .overlay(
+                VStack {
+                    Spacer()
+                    Rectangle()
+                        .frame(height: 0.05)
+                        .foregroundColor(Color(.systemGray2))
+                        .padding(.top, 35)
+                }
+                    .padding(.horizontal, -20)
+            )
+    }
+}
+
 #Preview {
     TaskFormView(
         title: .constant("Sample Task"),
@@ -72,7 +96,6 @@ extension Binding {
         newCategory: .constant(""),
         doneBy: .constant(Date()),
         includeNewCategory: .constant(false),
-        includeDoneBy: .constant(true),
-        isCompletedBinding: .constant(false)
+        includeDoneBy: .constant(false)
     )
 }

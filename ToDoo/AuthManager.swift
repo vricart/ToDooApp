@@ -12,6 +12,20 @@ class AuthManager: ObservableObject {
     @Published var isAuthenticated: Bool = false
     @Published var userName: String = "User"
     @Published var errorMessage: String = ""
+    
+    init() {
+        checkAuthStatus()
+    }
+    
+    func checkAuthStatus() {
+        if let user = Auth.auth().currentUser {
+            self.isAuthenticated = true
+            self.userName = user.displayName ?? "User"
+        } else {
+            self.isAuthenticated = false
+            self.userName = "User"
+        }
+    }
 
     func signUp(name: String, email: String, password: String) {
         clearError()
