@@ -10,6 +10,7 @@ import SwiftUI
 struct OnboardingView: View {
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     @Binding var showSignUp: Bool
+    @Binding var showOnboarding: Bool
 
     var body: some View {
         VStack {
@@ -38,6 +39,7 @@ struct OnboardingView: View {
                 print("Get Started button clicked.")
                 hasSeenOnboarding = true
                 showSignUp = true
+                showOnboarding = false
             }
         }
         .padding()
@@ -45,7 +47,7 @@ struct OnboardingView: View {
 }
 
 #Preview {
-    OnboardingView(showSignUp: .constant(false))
+    OnboardingView(showSignUp: .constant(false), showOnboarding: .constant(false))
 }
 
 

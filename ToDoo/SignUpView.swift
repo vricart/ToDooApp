@@ -14,6 +14,7 @@ struct SignUpView: View {
     @EnvironmentObject private var authManager: AuthManager
     @Environment(\.dismiss) var dismiss
     @Binding var showSignUp: Bool
+    @Binding var showOnboarding: Bool
 
     var body: some View {
         ZStack {
@@ -73,10 +74,21 @@ struct SignUpView: View {
                 dismiss()
             }
         }
+        .gesture(
+            DragGesture()
+                .onEnded { value in
+                    if value.translation.width > 100 {
+                        authManager.clearError()
+                        showSignUp = false
+                        showOnboarding = true
+                    }
+                }
+        )
     }
 }
 
+
 #Preview {
-    SignUpView(showSignUp: .constant(true))
+    SignUpView(showSignUp: .constant(true), showOnboarding: .constant(false))
         .environmentObject(AuthManager())
 }
