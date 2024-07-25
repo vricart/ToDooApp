@@ -10,6 +10,7 @@ import SwiftUI
 struct CustomButton: View {
     var title: String
     var action: () -> Void
+    var isDisabled: Bool = false
 
     var body: some View {
         Button(action: action) {
@@ -19,7 +20,7 @@ struct CustomButton: View {
                 .frame(maxWidth: .infinity)
                 .background(
                     LinearGradient(
-                        gradient: Gradient(colors: [Color.secondaryGreenColor, Color.mainGreenColor]),
+                        gradient: Gradient(colors: isDisabled ? [Color.gray, Color.gray] : [Color.secondaryGreenColor, Color.mainGreenColor]),
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -28,9 +29,14 @@ struct CustomButton: View {
                 .cornerRadius(8)
         }
         .padding()
+        .disabled(isDisabled)
     }
 }
 
 #Preview {
-    CustomButton(title: "Get Started", action: {})
+    CustomButton(title: "Get Started", action: {}, isDisabled: true)
+}
+
+#Preview {
+    CustomButton(title: "Get Started", action: {}, isDisabled: true)
 }

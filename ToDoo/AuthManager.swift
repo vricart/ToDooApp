@@ -12,18 +12,20 @@ class AuthManager: ObservableObject {
     @Published var isAuthenticated: Bool = false
     @Published var userName: String = "User"
     @Published var errorMessage: String = ""
-    
+
     init() {
         checkAuthStatus()
     }
-    
+
     func checkAuthStatus() {
         if let user = Auth.auth().currentUser {
             self.isAuthenticated = true
             self.userName = user.displayName ?? "User"
+            print("User is already authenticated: \(self.userName)")
         } else {
             self.isAuthenticated = false
             self.userName = "User"
+            print("No authenticated user found")
         }
     }
 
@@ -37,7 +39,10 @@ class AuthManager: ObservableObject {
                 self.errorMessage = error.localizedDescription
                 return
             }
-            guard let user = authResult?.user else { return }
+            guard let user = authResult?.user else {
+                print("User creation failed: No user returned")
+                return
+            }
             let changeRequest = user.createProfileChangeRequest()
             changeRequest.displayName = name
             changeRequest.commitChanges { error in
@@ -62,9 +67,13 @@ class AuthManager: ObservableObject {
                 self.errorMessage = error.localizedDescription
                 return
             }
-            guard let user = authResult?.user else { return }
+            guard let user = authResult?.user else {
+                print("Sign-in failed: No user returned")
+                return
+            }
             self.isAuthenticated = true
             self.userName = user.displayName ?? "User"
+            print("User signed in successfully: \(self.userName)")
         }
     }
 
@@ -74,8 +83,10 @@ class AuthManager: ObservableObject {
             try Auth.auth().signOut()
             self.isAuthenticated = false
             self.userName = "User"
+            print("User signed out successfully")
         } catch let signOutError as NSError {
             self.errorMessage = signOutError.localizedDescription
+            print("Error signing out: \(self.errorMessage)")
         }
     }
 

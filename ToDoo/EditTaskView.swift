@@ -46,16 +46,17 @@ struct EditTaskView: View {
                 
                 Spacer(minLength: 100)
                 
+                CustomButton(title: "Save", action: updateTask, isDisabled: title.isEmpty)
+                    .padding()
             }
             .navigationTitle("Edit Task")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Save") {
-                        updateTask()
-                    }
-                }
-            }
+        }
+        .onChange(of: title) {
+            print("Title changed to: \(title)") // Debug print
+        }
+        .onChange(of: description) {
+            print("Description changed to: \(description)") // Debug print
         }
     }
 
@@ -71,8 +72,6 @@ struct EditTaskView: View {
                 viewModel.addCategory(name: newCategory)
             }
             return newCategory
-        } else if includeDoneBy && doneBy != nil && doneBy! > Date() {
-            return "Planned"
         } else {
             return category
         }

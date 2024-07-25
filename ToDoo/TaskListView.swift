@@ -14,6 +14,7 @@ struct TaskListView: View {
     @EnvironmentObject var authManager: AuthManager
     @Binding var showSignUp: Bool
     @State private var isAddingToDo = false
+    @State private var defaultCategory: String? = nil
 
     var body: some View {
         NavigationStack {
@@ -62,9 +63,6 @@ struct TaskListView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack {
-//                            NavigationLink(destination: AddTaskView(viewModel: viewModel)) {
-//                                Image(systemName: "plus")
-//                            }
                         Button(action: {
                             authManager.signOut()
                             showSignUp = false
@@ -82,7 +80,7 @@ struct TaskListView: View {
             }
         }
         .sheet(isPresented: $isAddingToDo) {
-            AddTaskView(viewModel: viewModel)
+            AddTaskView(viewModel: viewModel, defaultCategory: defaultCategory)
         }
     }
 }

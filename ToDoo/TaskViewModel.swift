@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import FirebaseAuth
 
 @MainActor
 class TaskViewModel: ObservableObject {
@@ -14,8 +15,19 @@ class TaskViewModel: ObservableObject {
         }
     }
 
-    private let tasksKey = "tasks"
-    private let categoriesKey = "categories"
+    private var tasksKey: String {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return "tasks"
+        }
+        return "tasks_\(userID)"
+    }
+
+    private var categoriesKey: String {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return "categories"
+        }
+        return "categories_\(userID)"
+    }
 
     init() {
         loadTasks()
@@ -53,12 +65,18 @@ class TaskViewModel: ObservableObject {
         }
     }
 
+    func deleteCategory(name: String) {
+        guard name != "Today", name != "Planned" else { return }
+        categories.removeAll { $0 == name }
+        taskList.removeAll { $0.category == name }
+    }
+
     func taskCount(for category: String) -> Int {
         switch category {
         case "Today":
             return taskList.filter { $0.doneBy?.isToday == true || ($0.doneBy == nil && $0.category != "Planned") }.count
         case "Planned":
-            return taskList.filter { $0.doneBy != nil && !$0.doneBy!.isToday }.count
+            return taskList.filter { $0.doneBy != nil }.count
         default:
             return taskList.filter { $0.category == category }.count
         }
@@ -69,10 +87,22 @@ class TaskViewModel: ObservableObject {
         case "Today":
             return taskList.filter { $0.doneBy?.isToday == true || ($0.doneBy == nil && $0.category != "Planned") }
         case "Planned":
-            return taskList.filter { $0.doneBy != nil && !$0.doneBy!.isToday }
+            return taskList.filter { $0.doneBy != nil }
         default:
             return taskList.filter { $0.category == category }
         }
+    }
+    
+    func tasksGroupedByDueDate(for category: String) -> [(String, [Task])] {
+        guard category == "Planned" else {
+            return []
+        }
+        
+        let groupedTasks = Dictionary(grouping: tasks(for: category)) { task in
+            task.doneBy?.formatted(.dateTime.year().month().day()) ?? "No Date"
+        }
+        
+        return groupedTasks.sorted { $0.key < $1.key }
     }
 
     private func saveTasks() {
@@ -97,7 +127,7 @@ class TaskViewModel: ObservableObject {
             categories = savedCategories
         }
     }
-    
+
     static func imageName(for category: String) -> String {
         switch category {
         case "Personal":

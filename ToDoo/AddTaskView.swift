@@ -12,11 +12,16 @@ struct AddTaskView: View {
     @Environment(\.dismiss) var dismiss
     @State private var title = ""
     @State private var description = ""
-    @State private var category: String = "Personal"
+    @State private var category: String
     @State private var newCategory = ""
     @State private var doneBy: Date? = nil
     @State private var includeNewCategory = false
     @State private var includeDoneBy = false
+
+    init(viewModel: TaskViewModel, defaultCategory: String? = nil) {
+        self.viewModel = viewModel
+        _category = State(initialValue: defaultCategory ?? (viewModel.categories.first { $0 != "Today" && $0 != "Planned" } ?? "Personal"))
+    }
 
     var body: some View {
         NavigationStack {
@@ -34,13 +39,17 @@ struct AddTaskView: View {
                 
                 Spacer()
                 
-                CustomButton(title:"Add Task") {
-                    addTask()
-                }
-                .padding()
+                CustomButton(title: "Add Task", action: addTask, isDisabled: title.isEmpty)
+                    .padding()
             }
             .navigationTitle("Add Task")
             .navigationBarTitleDisplayMode(.inline)
+        }
+        .onChange(of: title) {
+            print("Title changed to: \(title)") // Debug print
+        }
+        .onChange(of: description) {
+            print("Description changed to: \(description)") // Debug print
         }
     }
 
@@ -56,8 +65,6 @@ struct AddTaskView: View {
                 viewModel.addCategory(name: newCategory)
             }
             return newCategory
-        } else if includeDoneBy && doneBy != nil && doneBy! > Date() {
-            return "Planned"
         } else {
             return category
         }
@@ -65,5 +72,5 @@ struct AddTaskView: View {
 }
 
 #Preview {
-    AddTaskView(viewModel: TaskViewModel())
+    AddTaskView(viewModel: TaskViewModel(), defaultCategory: "Personal")
 }

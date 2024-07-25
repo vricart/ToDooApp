@@ -16,9 +16,8 @@ struct TaskFormView: View {
                 .offset(y: 325).edgesIgnoringSafeArea(.all)
             
             Form {
-                
-                Section("Title") {
-                    TextField("Title", text: $title)
+                Section("Task") {
+                    TextField("Task", text: $title)
                         .underlineTextField()
                 }
                 
@@ -29,7 +28,7 @@ struct TaskFormView: View {
                 
                 Section("Category") {
                     Picker("Category", selection: $category) {
-                        ForEach(categories, id: \.self) { category in
+                        ForEach(categories.filter { $0 != "Today" && $0 != "Planned" }, id: \.self) { category in
                             Text(category).tag(category)
                         }
                     }
@@ -53,7 +52,7 @@ struct TaskFormView: View {
                     Toggle("Done By?", isOn: $includeDoneBy)
                     if includeDoneBy {
                         DatePicker("Done By", selection: Binding($doneBy, replacingNilWith: Date()), displayedComponents: .date)
-                            .datePickerStyle(GraphicalDatePickerStyle())
+                            .datePickerStyle(.compact)
                     }
                 }
             }
